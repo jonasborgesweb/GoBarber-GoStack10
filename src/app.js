@@ -1,6 +1,9 @@
 import express from 'express';
 import routes from './routes';
 
+// Importando o Banco de Dados
+import './database';
+
 class App {
     constructor() {
         this.server = express();
