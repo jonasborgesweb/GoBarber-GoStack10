@@ -1,5 +1,8 @@
 import Sequelize from 'sequelize';
 
+// Importando o Mongoose
+import mongoose from 'mongoose';
+
 // Importando as Configurações do Banco de Dados
 import databaseConfig from '../config/database';
 
@@ -14,6 +17,7 @@ const models = [User, File, Appointment];
 class Database {
     constructor() {
         this.init();
+        this.mongo();
     }
 
     init() {
@@ -27,6 +31,18 @@ class Database {
                 model =>
                     model.associate && model.associate(this.connection.models)
             );
+    }
+
+    mongo() {
+        // Criando a conexão com o MongoDB
+        this.mongoConnection = mongoose.connect(
+            'mongodb://localhost:27017/gobarber',
+            {
+                useNewUrlParser: true,
+                useFindAndModify: true,
+                useUnifiedTopology: true,
+            }
+        );
     }
 }
 
