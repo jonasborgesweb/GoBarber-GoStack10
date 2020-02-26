@@ -11,6 +11,7 @@ import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
 import FileController from './app/controllers/FileController';
 import ProviderController from './app/controllers/ProviderController';
+import AppointmentController from './app/controllers/AppointmentController';
 
 // Importando Middlewares
 import authMiddlewares from './app/middlewares/auth';
@@ -37,4 +38,6 @@ routes.post('/files', upload.single('file'), FileController.store);
 // Rota de Listagem de Providers
 routes.get('/providers', ProviderController.index);
 
+// Rota de Agendamento
+routes.post('/appointments', AppointmentController.store);
 export default routes;
