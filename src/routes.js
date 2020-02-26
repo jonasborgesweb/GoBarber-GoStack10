@@ -40,4 +40,7 @@ routes.get('/providers', ProviderController.index);
 
 // Rota de Agendamento
 routes.post('/appointments', AppointmentController.store);
+
+// Rota de Listagem de Agendamento
+routes.get('/appointments', AppointmentController.index);
 export default routes;
