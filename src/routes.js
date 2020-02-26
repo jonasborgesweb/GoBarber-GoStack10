@@ -1,5 +1,11 @@
 import { Router } from 'express';
 
+// Importando o Multer
+import multer from 'multer';
+
+// Importando as Configuraçoes de Uploads
+import multerConfig from './config/multer';
+
 // Importando as Controllers
 import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
@@ -8,6 +14,9 @@ import SessionController from './app/controllers/SessionController';
 import authMiddlewares from './app/middlewares/auth';
 
 const routes = new Router();
+
+// Criando o Upload
+const upload = multer(multerConfig);
 
 // Rota de Login
 routes.post('/sessions', SessionController.store);
@@ -19,5 +28,10 @@ routes.post('/users', UserController.store);
 routes.use(authMiddlewares);
 // Rota de Edição de Usuário
 routes.put('/users', UserController.update);
+
+// Rota de update
+routes.post('/files', upload.single('file'), (req, res) => {
+    return res.json({ ok: true });
+});
 
 export default routes;
