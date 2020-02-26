@@ -51,4 +51,7 @@ routes.get('/schedule', ScheduleController.index);
 
 // Rota de Listagem de Notificação do Usuário
 routes.get('/notifications', NotificationController.index);
+
+// Rota de Notificação Lida
+routes.put('/notifications/:id', NotificationController.update);
 export default routes;
