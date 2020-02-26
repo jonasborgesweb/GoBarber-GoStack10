@@ -12,6 +12,7 @@ import SessionController from './app/controllers/SessionController';
 import FileController from './app/controllers/FileController';
 import ProviderController from './app/controllers/ProviderController';
 import AppointmentController from './app/controllers/AppointmentController';
+import ScheduleController from './app/controllers/ScheduleController';
 
 // Importando Middlewares
 import authMiddlewares from './app/middlewares/auth';
@@ -41,6 +42,9 @@ routes.get('/providers', ProviderController.index);
 // Rota de Agendamento
 routes.post('/appointments', AppointmentController.store);
 
-// Rota de Listagem de Agendamento
+// Rota de Listagem de Agendamento Usuário
 routes.get('/appointments', AppointmentController.index);
+
+// Rota de Listagem de Agendamento Provider
+routes.get('/schedule', ScheduleController.index);
 export default routes;
