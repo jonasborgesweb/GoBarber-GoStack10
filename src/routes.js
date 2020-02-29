@@ -40,8 +40,11 @@ routes.post('/files', upload.single('file'), FileController.store);
 // Rota de Listagem de Providers
 routes.get('/providers', ProviderController.index);
 
-// Rota de Agendamento
+// Rota de Agendamento - Create
 routes.post('/appointments', AppointmentController.store);
+
+// Rota de Agendamento - Delele
+routes.delete('/appointments/:id', AppointmentController.delete);
 
 // Rota de Listagem de Agendamento Usuário
 routes.get('/appointments', AppointmentController.index);

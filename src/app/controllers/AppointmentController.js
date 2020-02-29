@@ -2,7 +2,7 @@
 import * as Yup from 'yup';
 
 // Importando Validacão de Horas
-import { startOfHour, parseISO, isBefore, format } from 'date-fns';
+import { startOfHour, subHours, parseISO, isBefore, format } from 'date-fns';
 
 // Importando o Tipo Portugues para a Data
 import pt from 'date-fns/locale/pt';
@@ -18,6 +18,9 @@ import Appointment from '../models/Appointment';
 
 // Importando o Schema de Notificação
 import Notification from '../schemas/Notification';
+
+// Importando Lib de Email
+import Mail from '../../lib/mail';
 
 class AppointmentController {
     async index(req, res) {
@@ -115,6 +118,48 @@ class AppointmentController {
             content: `Novo Agendamento de ${user.name} para ${formattedDate}`,
             user: provider_id,
         });
+        return res.json(appointment);
+    }
+
+    async delete(req, res) {
+        // Buscando os dados do Agendamento
+        const appointment = await Appointment.findByPk(req.params.id, {
+            include: [
+                {
+                    model: User,
+                    as: 'provider',
+                    attributes: ['name', 'email'],
+                },
+            ],
+        });
+
+        // Verificando o Dono do Agendamento
+        if (appointment.user_id !== req.userId) {
+            return res.json(401).json({
+                error: "You don't permission to cancel this appointment.",
+            });
+        }
+
+        // Verificando a Data
+        const dataWithSub = subHours(appointment.date, 2);
+
+        if (isBefore(dataWithSub, new Date())) {
+            return res.status(401).json({
+                error: 'You can only appointments 2 hours in advance.',
+            });
+        }
+
+        // Adicionando a data de cancelamento no agendamento
+        appointment.canceled_at = new Date();
+
+        await appointment.save();
+
+        await Mail.sendMail({
+            to: `${appointment.provider.name}<${appointment.provider.email}>`,
+            subject: 'Agendamento Cancelado',
+            text: 'Voce tem um novo Cancelamento',
+        });
+
         return res.json(appointment);
     }
 }
