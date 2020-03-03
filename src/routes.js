@@ -14,6 +14,7 @@ import ProviderController from './app/controllers/ProviderController';
 import AppointmentController from './app/controllers/AppointmentController';
 import ScheduleController from './app/controllers/ScheduleController';
 import NotificationController from './app/controllers/NotificationController';
+import AvailableController from './app/controllers/AvailableController';
 
 // Importando Middlewares
 import authMiddlewares from './app/middlewares/auth';
@@ -57,4 +58,8 @@ routes.get('/notifications', NotificationController.index);
 
 // Rota de Notificação Lida
 routes.put('/notifications/:id', NotificationController.update);
+
+// Rota de Horários Disponiveis
+routes.get('/providers/:providerId/available', AvailableController.index);
+
 export default routes;
