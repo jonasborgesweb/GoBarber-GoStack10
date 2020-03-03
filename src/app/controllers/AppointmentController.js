@@ -19,8 +19,9 @@ import Appointment from '../models/Appointment';
 // Importando o Schema de Notificação
 import Notification from '../schemas/Notification';
 
-// Importando Lib de Email
-import Mail from '../../lib/mail';
+// Improtações de Email
+import CancellationMail from '../jobs/cancellationMail';
+import Queue from '../../lib/Queue';
 
 class AppointmentController {
     async index(req, res) {
@@ -158,6 +159,11 @@ class AppointmentController {
         appointment.canceled_at = new Date();
 
         await appointment.save();
+
+        // Configurações de Envio de Email
+        await Queue.add(CancellationMail.key, {
+            appointment,
+        });
 
         return res.json(appointment);
     }
